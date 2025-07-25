@@ -378,6 +378,7 @@
       letter-spacing: 0.01em;
     }
     footer .terms{font-size:.85em;margin-left:.8em;color:#8c72b9;text-decoration:underline;cursor:pointer;}
+@media (max-width:780px){.nav-links{display:none;}}
   </style>
 </head>
 <body>
