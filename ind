@@ -323,8 +323,13 @@
       display: flex;
       flex-direction: column;
     }
-    @media (max-width: 700px) {
-      #chatbot-container { width: 92vw; height: 66vh; min-width: 200px; }
+    @media (max-width: 780px) {
+      #chatbot-container {
+        width: 80%;
+        height: 80%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
     }
     #chatbot-header {
       display: flex; justify-content: space-between; align-items: center; gap:.5rem;
