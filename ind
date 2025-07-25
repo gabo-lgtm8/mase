@@ -88,12 +88,12 @@
       margin-right: 80px;
       margin-top: 225px;
       display: grid;
-      grid-template-columns: repeat(4, minmax(17rem, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(4, minmax(12.75rem, 1fr));
+      gap: 1.125rem;
     }
     .card {
       --grad: var(--clr-primary), var(--clr-accent);
-      padding: 1.7rem;
+      padding: 1.275rem;
       background: var(--clr-glass);
       border-radius: 2rem;
       gap: 1.1rem;
@@ -107,12 +107,12 @@
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      min-height: 170px;
-      font-size: 0.93em;
+      min-height: 128px;
+      font-size: 0.7em;
     }
     .card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 4px 32px #ff3bdc22; }
     .card .title {
-      font-size: 1.01rem;
+      font-size: 0.76rem;
       grid-area: title;
       align-self: end;
       text-transform: uppercase;
@@ -121,7 +121,7 @@
     }
     .card .icon {
       grid-area: icon;
-      font-size: 1.9rem;
+      font-size: 1.43rem;
       align-self: end;
       justify-self: end;
     }

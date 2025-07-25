@@ -11,14 +11,14 @@ body.dark{background:var(--clr-bg-dark);color:var(--clr-tx-dark);}
 .toggles{position:absolute;right:16px;top:17px;display:flex;gap:.6rem;}
 .toggle-btn{background:var(--clr-primary);color:#fff;border:none;border-radius:7px;padding:0.38em 1em;font-size:.97rem;cursor:pointer;font-weight:600;transition:background .15s;}
 .toggle-btn:hover{background:var(--clr-accent);}
-.grid-cards{margin-top:225px;display:grid;grid-template-columns:repeat(4,minmax(300px,1fr));gap:2rem;margin-left:auto;margin-right:80px;}
+.grid-cards{margin-top:225px;display:grid;grid-template-columns:repeat(4,minmax(225px,1fr));gap:1.5rem;margin-left:auto;margin-right:80px;}
 @media (max-width:780px){.grid-cards{grid-template-columns:1fr;max-width:96vw;gap:1.2rem;margin-top:130px;}}
-.card{display:grid;grid-template:'title icon''desc desc''bar bar'/1fr auto;background:var(--clr-glass);border-radius:2rem;box-shadow:var(--clr-shadow);border:1px solid #e6e7f2;padding:2rem 1.4rem 1.1rem;min-height:170px;cursor:pointer;transition:transform .19s,box-shadow .19s;position:relative;}
+.card{display:grid;grid-template:'title icon''desc desc''bar bar'/1fr auto;background:var(--clr-glass);border-radius:2rem;box-shadow:var(--clr-shadow);border:1px solid #e6e7f2;padding:1.5rem 1.05rem .83rem;min-height:128px;cursor:pointer;transition:transform .19s,box-shadow .19s;position:relative;}
 body.dark .card{background:rgba(36,29,55,0.93);box-shadow:var(--clr-shadow-dark);color:#fafbfe;}
 .card:hover{transform:translateY(-7px) scale(1.025);box-shadow:0 4px 32px #ff3bdc22;}
-.card .title{font-size:1.09rem;font-weight:700;grid-area:title;text-transform:uppercase;letter-spacing:.03em;}
-.card .icon{grid-area:icon;font-size:2.3rem;justify-self:end;align-self:end;line-height:1;}
-.card .desc{grid-area:desc;margin:.6rem 0 .4rem;font-size:.99rem;}
+.card .title{font-size:.82rem;font-weight:700;grid-area:title;text-transform:uppercase;letter-spacing:.03em;}
+.card .icon{grid-area:icon;font-size:1.73rem;justify-self:end;align-self:end;line-height:1;}
+.card .desc{grid-area:desc;margin:.6rem 0 .4rem;font-size:.74rem;}
 .card::after{content:"";grid-area:bar;height:2px;background:linear-gradient(90deg,var(--clr-primary),var(--clr-accent));margin-top:.8rem;}
 /* --- FABs --- */
 .fabs{position:fixed;right:10px;bottom:25px;z-index:120;display:flex;flex-direction:column;gap:1.15rem;}
