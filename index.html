@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>OPS Online Support</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons&display=block">
+<style>:root{--clr-primary:#00c4ff;--clr-accent:#ff3bdb;--clr-accent-dark:#e000be;--clr-bg:#f6f8fc;--clr-bg-dark:#181629;--clr-tx:#251541;--clr-tx-dark:#fafbfe;--clr-glass:rgba(255,255,255,.79);--clr-shadow:0 2px 28px #b6b9f7a8,-20px 20px 40px hsl(270 42% 45%/.18);--clr-shadow-dark:0 2px 24px #11142b88;}
+body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--clr-bg);color:var(--clr-tx);transition:background .24s,color .16s;min-height:100vh;padding-bottom:64px;box-sizing:border-box;}
+body.dark{background:var(--clr-bg-dark);color:var(--clr-tx-dark);}
+.ops-nav{position:fixed;top:0;left:0;width:100%;z-index:11;display:flex;align-items:center;justify-content:center;height:68px;background:transparent;}
+.ops-logo{position:absolute;left:18px;top:17px;font-size:2rem;font-weight:bold;color:var(--clr-accent);user-select:none;}
+.mainnav{display:flex;gap:2.2rem;}
+.mainnav a{color:inherit;text-decoration:none;font-weight:600;font-size:1.07rem;transition:color .18s;}
+.mainnav a:hover,.mainnav a.active{color:var(--clr-primary);}
+.toggles{position:absolute;right:16px;top:17px;display:flex;gap:.6rem;}
+.toggle-btn{background:var(--clr-primary);color:#fff;border:none;border-radius:7px;padding:0.38em 1em;font-size:.97rem;cursor:pointer;font-weight:600;transition:background .15s;}
+.toggle-btn:hover{background:var(--clr-accent);}
+.grid-cards{margin-top:200px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;max-width:1040px;margin-left:auto;margin-right:auto;}
+@media (max-width:780px){.grid-cards{grid-template-columns:1fr;max-width:96vw;gap:1.2rem;margin-top:130px;}}
+.card{display:grid;grid-template:'title icon''desc desc''bar bar'/1fr auto;background:var(--clr-glass);border-radius:2rem;box-shadow:var(--clr-shadow);border:1px solid #e6e7f2;padding:2rem 1.4rem 1.1rem;min-height:170px;cursor:pointer;transition:transform .19s,box-shadow .19s;position:relative;}
+body.dark .card{background:rgba(36,29,55,0.93);box-shadow:var(--clr-shadow-dark);color:#fafbfe;}
+.card:hover{transform:translateY(-7px) scale(1.025);box-shadow:0 4px 32px #ff3bdc22;}
+.card .title{font-size:1.09rem;font-weight:700;grid-area:title;text-transform:uppercase;letter-spacing:.03em;}
+.card .icon{grid-area:icon;font-size:2.3rem;justify-self:end;align-self:end;line-height:1;}
+.card .desc{grid-area:desc;margin:.6rem 0 .4rem;font-size:.99rem;}
+.card::after{content:"";grid-area:bar;height:2px;background:linear-gradient(90deg,var(--clr-primary),var(--clr-accent));margin-top:.8rem;}
+/* --- FABs --- */
+.fabs{position:fixed;right:18px;bottom:20px;z-index:120;display:flex;flex-direction:column;gap:1.15rem;}
+.fab-btn{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--clr-accent),var(--clr-primary));box-shadow:0 4px 22px #44287333;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.1rem;border:none;cursor:pointer;transition:background .18s,box-shadow .19s;}
+.fab-btn:hover{background:linear-gradient(135deg,var(--clr-primary),var(--clr-accent));box-shadow:0 8px 40px #ff3bdc33;}
+@media(max-width:780px){.fabs{right:14px;bottom:14px;gap:.7rem;}.fab-btn{width:54px;height:54px;font-size:1.8rem;}}
+/* --- Mobile Nav --- */
+.mobile-nav{display:none;}
+@media(max-width:780px){.mobile-nav{display:block;position:fixed;left:0;bottom:0;width:100vw;height:62px;z-index:180;}
+.mobile-bar{background:var(--clr-glass);box-shadow:0 -3px 28px #43246914;display:flex;align-items:center;justify-content:space-between;padding:0 .7em;min-height:62px;}
+.mobile-bar .mobile-btn{background:transparent;border:none;font-size:2.05rem;color:var(--clr-accent);margin-top:2px;cursor:pointer;}
+.mobile-more{position:relative;}
+.mobile-panel{display:none;position:absolute;bottom:64px;right:6px;flex-direction:column;gap:.5rem;background:var(--clr-glass);border-radius:1.2em;box-shadow:0 2px 18px #32124733;padding:1em 1.2em;min-width:160px;}
+.mobile-panel.active{display:flex;animation:fadein .22s;}
+@keyframes fadein{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
+.mobile-panel a,.mobile-panel button{color:#321b53;background:none;border:none;font-size:1.07rem;text-align:left;cursor:pointer;padding:.5em .2em;border-radius:7px;transition:background .17s;}
+.mobile-panel a:hover,.mobile-panel button:hover{background:#eee4fd;color:var(--clr-accent);}
+}
+/* --- Modals --- */
+.modal-backdrop{position:fixed;z-index:2001;left:0;top:0;right:0;bottom:0;background:rgba(44,26,73,0.31);display:flex;align-items:center;justify-content:center;}
+.ops-modal{min-width:290px;max-width:480px;width:92vw;max-height:93vh;overflow-y:auto;background:#fff;color:#1a1930;border-radius:2rem;box-shadow:0 8px 60px #7b39ff1a,0 0 0 2px #fff1;padding:2.1rem 2.1rem 1.1rem 2.1rem;position:relative;transition:box-shadow .17s;z-index:2222;}
+body.dark .ops-modal{background:#251541;color:#fafbfe;}
+.modal-header{display:flex;gap:1.3em;align-items:center;margin-bottom:1em;}
+.modal-header img{width:72px;height:72px;object-fit:cover;border-radius:1.2em;border:2px solid #f5e0ff;}
+.modal-title{font-size:1.17em;font-weight:700;text-transform:uppercase;}
+.modal-x{position:absolute;top:1.1em;right:1.4em;font-size:1.8rem;color:var(--clr-accent);border:none;background:none;cursor:pointer;font-weight:bold;}
+.modal-x:focus{outline:2px solid var(--clr-accent);}
+.modal-content-body{margin-bottom:1.05em;font-size:1.02em;}
+.modal-video{background:#f7f4fb;color:#ab8adc;border-radius:1em;margin-bottom:1em;padding:1em;text-align:center;}
+body.dark .modal-video{background:#18162a;color:#ffe7fe;}
+ul.modal-list{margin-bottom:1.2em;margin-left:1.3em;}
+ul.modal-list li{margin-bottom:.42em;}
+.modal-actions{display:flex;gap:.8em;justify-content:flex-end;flex-wrap:wrap;margin-top:1.3em;}
+.modal-btn{border:none;border-radius:1.2em;background:#eae6fc;color:#4d1d79;padding:.6em 1.5em;font-size:1em;cursor:pointer;font-weight:600;margin-top:.3em;transition:background .15s;}
+.modal-btn.cta{background:linear-gradient(90deg,var(--clr-primary),var(--clr-accent));color:#fff;}
+.modal-btn:hover,.modal-btn:focus{background:#f9d4fc;}
+.modal-btn.cta:hover{background:linear-gradient(90deg,var(--clr-accent),var(--clr-primary));}
+/* --- Forms --- */
+form{background:#f9f9fd;padding:1.5rem 1.1rem;border-radius:14px;border:1px solid #e6e6fa;}
+label{display:block;margin-top:1rem;font-weight:600;}
+input,select,textarea{width:100%;padding:.63rem;border-radius:7px;border:1px solid #ccc;font-size:1rem;margin-top:.19rem;}
+textarea{resize:vertical;}
+.form-row{display:flex;flex-wrap:wrap;gap:1.1rem;}
+.form-cell{flex:1 1 48%;}
+@media(max-width:600px){.form-cell{flex:1 1 100%;}}
+.modal-footer{margin-top:2rem;text-align:center;}
+.submit-btn{width:110px;height:42px;background:var(--clr-primary);border:none;border-radius:11px;color:#fff;font-weight:600;font-size:1rem;cursor:pointer;box-shadow:0 4px 8px #0002;transition:background .2s;}
+.submit-btn:hover{background:var(--clr-accent-dark);}
+@media(max-width:700px){.ops-modal{width:96vw;max-width:98vw;}}
+/* --- Chatbot --- */
+#chatbot-modal-backdrop{position:fixed;z-index:3400;left:0;top:0;right:0;bottom:0;background:rgba(44,26,73,0.18);display:flex;align-items:center;justify-content:center;}
+#chatbot-container{min-width:290px;max-width:380px;width:96vw;height:480px;left:50%;top:10vh;transform:translate(-50%,0);overflow:hidden;display:flex;flex-direction:column;background:#251541;color:#fff;border-radius:19px;border:2px solid var(--clr-accent);box-shadow:0 8px 32px #0007;}
+#chatbot-header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--clr-primary) 0%,var(--clr-accent) 100%);color:#fff;font-weight:600;font-size:1.1rem;padding:.74rem 1rem;}
+#chatbot-header .ctrl{cursor:pointer;font-size:.93rem;font-weight:500;user-select:none;opacity:.87;}
+#chatbot-header .ctrl:hover{opacity:1;}
+#chatbot-x{font-size:1.3rem;margin-left:1.2em;color:#fff;background:none;border:none;cursor:pointer;font-weight:bold;}
+#chatbot-x:hover{color:var(--clr-accent);}
+#chat-log{flex:1;overflow-y:auto;padding:1rem;background:#1b0e2d;color:#eee;font-size:.95rem;}
+.chat-msg{margin:.5rem 0;max-width:90%;}
+.user{margin-left:auto;background:var(--clr-primary);color:#000;padding:.5rem .7rem;border-radius:14px 14px 0 14px;}
+.bot{margin-right:auto;background:#321b53;color:#fff;padding:.5rem .7rem;border-radius:14px 14px 14px 0;}
+#chatbot-form-container{background:#220f3a;border-top:1px solid var(--clr-accent);padding:.53rem .7rem;}
+#chatbot-input-row{display:flex;gap:.6rem;}
+#chatbot-input{flex:1;background:transparent;border:none;color:#fff;font-size:.95rem;padding:.57rem .6rem;}
+#chatbot-send{display:flex;align-items:center;gap:6px;background:var(--clr-accent);border:none;color:#fff;font-weight:600;padding:.5rem .9rem;border-radius:8px;cursor:pointer;transition:.3s;}
+#chatbot-send i{transition:transform .3s;}
+#chatbot-send:hover i{transform:rotate(-45deg);}
+#chatbot-send:disabled{background:#555;cursor:not-allowed;}
+.human-check{color:#ddd;font-size:.88rem;display:flex;align-items:center;margin-top:.36rem;}
+.human-check input{margin-right:.4rem;}
+/* --- Footer --- */
+footer{width:100vw;background:var(--clr-glass);color:#322e4b;font-size:.97rem;position:fixed;left:0;bottom:0;z-index:30;font-family:'Segoe UI',Arial,sans-serif;font-weight:500;padding:.86rem 1.7rem;text-align:right;letter-spacing:.01em;display:flex;align-items:center;justify-content:flex-end;}
+footer .terms{font-size:.85em;margin-left:.8em;color:#8c72b9;text-decoration:underline;cursor:pointer;}
+body.dark footer{background:#1b1734;color:#ccc;}
+</style></head>
+<body>
+<nav class="ops-nav" aria-label="OPS Navigation">
+  <span class="ops-logo">OPS</span>
+  <div class="mainnav">
+    <a href="#" class="main-link" data-key="ops"></a>
+    <a href="#" class="main-link" data-key="cc"></a>
+    <a href="#" class="main-link" data-key="it"></a>
+    <a href="#" class="main-link" data-key="pro"></a>
+  </div>
+  <div class="toggles">
+    <button class="toggle-btn" id="lang-toggle"></button>
+    <button class="toggle-btn" id="theme-toggle"></button>
+  </div>
+</nav>
+<div class="grid-cards">
+  <div class="card" id="card-ops" tabindex="0"></div>
+  <div class="card" id="card-cc" tabindex="0"></div>
+  <div class="card" id="card-it" tabindex="0"></div>
+  <div class="card" id="card-pro" tabindex="0"></div>
+</div>
+<div class="fabs">
+  <button class="fab-btn" id="fab-contact" title="Contact Us"><span class="material-icons">mail</span></button>
+  <button class="fab-btn" id="fab-join" title="Join Us"><span class="material-icons">person_add</span></button>
+  <button class="fab-btn" id="fab-chat" title="Chattia"><span class="material-icons">chat_bubble</span></button>
+</div>
+<div class="mobile-nav">
+  <div class="mobile-bar">
+    <button class="mobile-btn" id="mobile-home" title="Home"><span class="material-icons">home</span></button>
+    <div class="mobile-more">
+      <button class="mobile-btn" id="mobile-menu-btn"><span class="material-icons">menu</span></button>
+      <div class="mobile-panel" id="mobile-panel">
+        <button class="mobile-nav-btn" id="mobile-lang"></button>
+        <button class="mobile-nav-btn" id="mobile-theme"></button>
+        <hr style="width:80%;border:.5px solid #eee;">
+        <button class="mobile-nav-btn" data-key="ops"></button>
+        <button class="mobile-nav-btn" data-key="cc"></button>
+        <button class="mobile-nav-btn" data-key="it"></button>
+        <button class="mobile-nav-btn" data-key="pro"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-root"></div>
+<footer>
+  © 2025 OPS Online Support™
+  <a class="terms" href="#" onclick="alert('Terms & Conditions coming soon!');return false;">Terms &amp; Conditions</a>
+</footer>
+<script>
+/* === DATA (EN/ES) === */
+const LANGS={en:{ops:{title:"Business Operations",icon:"work",desc:"Streamline your processes, maximize efficiency, ensure compliance, and scale your business with precision.",modal:{title:"Business Operations",img:"https://placehold.co/96x96?text=OPS",imgAlt:"Business Operations",content:"Detailed content about our Business Operations services. We help optimize your processes, boost efficiency, and drive growth through strategic operational support. Key areas: process optimization, supply chain management, quality assurance.",video:"Video placeholder",features:["Workflow digitization & automation","Logistics & inventory efficiency","Risk & compliance frameworks (NIST, ISO, CISA)","Performance metric dashboards & analytics","Remote training & Lean operations"]}},cc:{title:"Contact Center",icon:"headset_mic",desc:"Enhance customer engagement with multilingual, multichannel support—24/7, data-driven, and empathetic.",modal:{title:"Contact Center",img:"https://placehold.co/96x96?text=CC",imgAlt:"Contact Center",content:"Explore our comprehensive Contact Center solutions to elevate customer satisfaction and engagement at every touchpoint. We offer inbound/outbound calls, multichannel support (email, chat, social), and advanced analytics.",video:"Video placeholder",features:["24/7 inbound/outbound call management","Multilingual chat/email support","CRM integration (e.g., HubSpot, Salesforce)","Social media engagement & sentiment tracking","Customer experience analytics & quality monitoring"]}},it:{title:"IT Support",icon:"support_agent",desc:"Reliable help desk, cybersecurity, and cloud management—keeping your systems secure, stable, and up.",modal:{title:"IT Support",img:"https://placehold.co/96x96?text=IT",imgAlt:"IT Support",content:"Our IT Support services deliver reliable, timely assistance to keep your systems running smoothly and securely: help desk, network monitoring, cybersecurity, and cloud infrastructure management.",video:"Video placeholder",features:["24/7 tech support & remote troubleshooting","Real-time network & system monitoring","Cybersecurity audits, patching, threat detection","Cloud infrastructure setup & maintenance","NIST, CISA, OPS Core CyberSec compliance"]}},pro:{title:"Professionals",icon:"groups",desc:"Hire top IT, project, finance, and HR professionals. NDA, compliance, role-trained. Remote-ready.",modal:{title:"Professionals",img:"https://placehold.co/96x96?text=PRO",imgAlt:"Professionals",content:"Access our network of highly qualified and experienced professionals for your project or long-term staffing. Experts in IT, project management, finance, HR. OPS-vetted, NDA, compliance trained.",video:"Video placeholder",features:["Remote IT professionals (SysAdmins, DevOps, Analysts)","Project managers & agile consultants","Finance and accounting professionals","HR and recruitment experts","OPS-vetted talent with NDA, compliance and role-specific training"]}},actions:{learn:"Learn More",join:"Join Us",contact:"Contact Us",chattia:"Ask Chattia"},nav:{ops:"Business Operations",cc:"Contact Center",it:"IT Support",pro:"Professionals"},footer:{terms:"Terms & Conditions"},contact:{title:"Contact Us",name:"Name",email:"Email",phone:"Contact Number",date:"Preferred Date",time:"Preferred Time",interest:"What are you interested about?",comments:"Comments",send:"Send",placeholder:"What service are you interested in?"},join:{title:"Join Us",name:"Name",email:"Email",phone:"Phone",skills:"Skills",education:"Education",cert:"Certification",hobbies:"Hobbies",interest:"What are you interested about?",contEd:"Continued Education",exp:"Experience",about:"Tell us about yourself",submit:"Submit"},chattia:{title:"OPS AI Chatbot",ph:"Type your message...",send:"Send",iam:"I am human"},mobile:{home:"Home",services:"Services"}},es:{ops:{title:"Operaciones Empresariales",icon:"work",desc:"Optimice procesos, maximice eficiencia, asegure cumplimiento y escale su negocio con precisión.",modal:{title:"Operaciones Empresariales",img:"https://placehold.co/96x96?text=OPS",imgAlt:"Operaciones Empresariales",content:"Contenido detallado sobre nuestros servicios de Operaciones Empresariales. Ayudamos a optimizar sus procesos, mejorar la eficiencia e impulsar el crecimiento mediante soporte operativo estratégico. Áreas clave: optimización de procesos, gestión de la cadena de suministro, aseguramiento de la calidad.",video:"Video demostrativo",features:["Digitalización y automatización de flujos de trabajo","Eficiencia logística e inventario","Marcos de riesgo y cumplimiento (NIST, ISO, CISA)","Paneles y análisis de métricas de rendimiento","Capacitación remota y operaciones Lean"]}},cc:{title:"Centro de Contacto",icon:"headset_mic",desc:"Impulse el compromiso del cliente con soporte multilingüe y multicanal—24/7, impulsado por datos y empático.",modal:{title:"Centro de Contacto",img:"https://placehold.co/96x96?text=CC",imgAlt:"Centro de Contacto",content:"Explore nuestras soluciones integrales de Centro de Contacto para elevar la satisfacción y el compromiso del cliente en cada punto de contacto. Ofrecemos llamadas entrantes/salientes, soporte multicanal (correo, chat, redes sociales) y análisis avanzados.",video:"Video demostrativo",features:["Gestión de llamadas entrantes/salientes 24/7","Soporte de chat/correo multilingüe","Integración CRM (ej. HubSpot, Salesforce)","Interacción y seguimiento en redes sociales","Análisis y monitoreo de experiencia al cliente"]}},it:{title:"Soporte IT",icon:"support_agent",desc:"Mesa de ayuda, ciberseguridad y gestión cloud fiables—mantenga sus sistemas seguros, estables y en línea.",modal:{title:"Soporte IT",img:"https://placehold.co/96x96?text=IT",imgAlt:"Soporte IT",content:"Nuestros servicios de Soporte IT ofrecen asistencia confiable y oportuna para mantener sus sistemas funcionando de forma segura: mesa de ayuda, monitoreo de red, ciberseguridad y gestión de infraestructura cloud.",video:"Video demostrativo",features:["Soporte técnico 24/7 y asistencia remota","Monitoreo de red y sistemas en tiempo real","Auditorías de ciberseguridad, parches, detección de amenazas","Configuración y mantenimiento de infraestructura cloud","Cumplimiento NIST, CISA, OPS Core CyberSec"]}},pro:{title:"Profesionales",icon:"groups",desc:"Contrate los mejores profesionales de IT, proyectos, finanzas y RRHH. NDA, cumplimiento y formación. Remoto.",modal:{title:"Profesionales",img:"https://placehold.co/96x96?text=PRO",imgAlt:"Profesionales",content:"Acceda a nuestra red de profesionales altamente calificados y experimentados para su proyecto o staff a largo plazo. Expertos en IT, gestión de proyectos, finanzas, RRHH. OPS-validados, NDA, formados en cumplimiento.",video:"Video demostrativo",features:["Profesionales IT remotos (SysAdmins, DevOps, Analistas)","Gestores de proyectos y consultores ágiles","Profesionales en finanzas y contabilidad","Expertos en RRHH y reclutamiento","Talento OPS-validado con NDA y formación en cumplimiento"]}},actions:{learn:"Más información",join:"Únete",contact:"Contáctanos",chattia:"Pregúntale a Chattia"},nav:{ops:"Operaciones",cc:"Centro Contacto",it:"Soporte IT",pro:"Profesionales"},footer:{terms:"Términos y Condiciones"},contact:{title:"Contáctanos",name:"Nombre",email:"Correo",phone:"Teléfono",date:"Fecha preferida",time:"Hora preferida",interest:"¿Qué te interesa?",comments:"Comentarios",send:"Enviar",placeholder:"¿Qué servicio te interesa?"},join:{title:"Únete",name:"Nombre",email:"Correo",phone:"Teléfono",skills:"Habilidades",education:"Educación",cert:"Certificación",hobbies:"Pasatiempos",interest:"¿Qué te interesa?",contEd:"Educación continua",exp:"Experiencia",about:"Cuéntanos sobre ti",submit:"Enviar"},chattia:{title:"Chatbot OPS AI",ph:"Escribe tu mensaje...",send:"Enviar",iam:"Soy humano"},mobile:{home:"Inicio",services:"Servicios"}}};
+/* === STATE === */
+let lang='en',theme=localStorage.getItem('ops-theme')||'light';
+/* === UI FILL === */
+function fillAllText(){const L=LANGS[lang];
+document.querySelectorAll('.main-link').forEach((el,i)=>{let keys=['ops','cc','it','pro'];el.textContent=L.nav[keys[i]];});
+['card-ops','card-cc','card-it','card-pro'].forEach((id,i)=>{
+  const key=['ops','cc','it','pro'][i],C=L[key];
+  let e=document.getElementById(id);
+  e.innerHTML=`<span class="title">${C.title}</span>
+    <span class="icon material-icons">${C.icon}</span>
+    <span class="desc">${C.desc}</span>`;
+});
+/* --- Mobile Nav --- */
+let mp=document.getElementById('mobile-panel'),btns=mp.querySelectorAll('.mobile-nav-btn');
+btns[0].textContent=lang=='en'?'ES':'EN';
+btns[1].textContent=theme=='dark'?L.mobile.home+" (Light)":L.mobile.home+" (Dark)";
+btns[2].textContent=L.nav.ops;btns[3].textContent=L.nav.cc;btns[4].textContent=L.nav.it;btns[5].textContent=L.nav.pro;
+document.getElementById('lang-toggle').textContent=lang=='en'?'ES':'EN';
+document.getElementById('theme-toggle').textContent=theme=='dark'?'Light':'Dark';
+}
+function setTheme(th){theme=th;localStorage.setItem('ops-theme',theme);if(theme=='dark')document.body.classList.add('dark');else document.body.classList.remove('dark');fillAllText();}
+function setLang(l){lang=l;fillAllText();}
+/* --- NAV + CARDS HANDLERS --- */
+function showModal(key){const L=LANGS[lang][key],A=LANGS[lang].actions;
+let features='<ul class="modal-list">'+L.modal.features.map(f=>'<li>'+f+'</li>').join('')+'</ul>';
+document.getElementById('modal-root').innerHTML=`<div class="modal-backdrop"><div class="ops-modal" tabindex="0" aria-modal="true">
+  <button class="modal-x" aria-label="Close" onclick="closeModal()">&times;</button>
+  <div class="modal-header"><img src="${L.modal.img}" alt="${L.modal.imgAlt}" />
+    <div><div class="modal-title">${L.modal.title}</div></div>
+  </div>
+  <div class="modal-content-body">${L.modal.content}</div>
+  <div class="modal-video">${L.modal.video}</div>
+  ${features}
+  <div class="modal-actions">
+    <button class="modal-btn" onclick="scrollToSection('${key}')">${A.learn}</button>
+    <button class="modal-btn" onclick="showJoinForm()">${A.join}</button>
+    <button class="modal-btn" onclick="showContactForm()">${A.contact}</button>
+    <button class="modal-btn cta" onclick="showChattia()">${A.chattia}</button>
+  </div></div></div>`;}
+function closeModal(){document.getElementById('modal-root').innerHTML='';}
+/* --- SCROLL TO SECTION --- */
+function scrollToSection(key){closeModal();window.scrollTo({top:200+document.getElementById('card-'+key).offsetTop-60,left:0,behavior:'smooth'});}
+/* --- CONTACT FORM --- */
+function showContactForm(){
+let L=LANGS[lang].contact;document.getElementById('modal-root').innerHTML=`<div class="modal-backdrop"><div class="ops-modal" tabindex="0">
+<button class="modal-x" aria-label="Close" onclick="closeModal()">&times;</button>
+<h2 style="margin-top:0;">${L.title}</h2>
+<form id="contactForm" autocomplete="off" novalidate>
+<div class="form-row">
+<div class="form-cell"><label for="name">${L.name}</label>
+<input id="name" required placeholder="${L.name}" /></div>
+<div class="form-cell"><label for="email">${L.email}</label>
+<input id="email" type="email" required placeholder="${L.email}" /></div></div>
+<div class="form-row">
+<div class="form-cell"><label for="contactNumber">${L.phone}</label>
+<input id="contactNumber" type="tel" required placeholder="${L.phone}" /></div>
+<div class="form-cell"><label for="preferredDate">${L.date}</label>
+<input id="preferredDate" type="date" required /></div></div>
+<div class="form-row">
+<div class="form-cell"><label for="preferredTime">${L.time}</label>
+<input id="preferredTime" type="time" required /></div>
+<div class="form-cell"><label for="interest">${L.interest}</label>
+<select id="interest" required>
+<option value="" disabled selected>Select</option>
+<option>${LANGS[lang].ops.title}</option>
+<option>${LANGS[lang].cc.title}</option>
+<option>${LANGS[lang].it.title}</option>
+<option>${LANGS[lang].pro.title}</option>
+</select></div></div>
+<div style="margin-top:1rem;">
+<label for="comments">${L.comments}</label>
+<textarea id="comments" rows="4" placeholder="${L.placeholder}"></textarea>
+</div>
+<div class="modal-footer">
+<button type="submit" class="submit-btn">${L.send}</button>
+</div></form></div></div>`;
+setTimeout(()=>{document.getElementById('contactForm').onsubmit=e=>{e.preventDefault();alert((lang=="en"?"Contact form submitted!":"¡Formulario de contacto enviado!"));closeModal();};},10);
+}
+/* --- JOIN US FORM --- */
+function showJoinForm(){
+let L=LANGS[lang].join;document.getElementById('modal-root').innerHTML=`<div class="modal-backdrop"><div class="ops-modal" tabindex="0">
+<button class="modal-x" aria-label="Close" onclick="closeModal()">&times;</button>
+<h2 style="margin-top:0;">${L.title}</h2>
+<form id="joinForm" autocomplete="off" novalidate>
+<div class="form-row">
+<div class="form-cell"><label for="name">${L.name}</label>
+<input id="name" required placeholder="${L.name}" /></div>
+<div class="form-cell"><label for="email">${L.email}</label>
+<input id="email" type="email" required placeholder="${L.email}" /></div></div>
+<div class="form-row">
+<div class="form-cell"><label for="phone">${L.phone}</label>
+<input id="phone" type="tel" required placeholder="${L.phone}" /></div>
+<div class="form-cell"></div></div>
+<div class="form-section"><label for="skills">${L.skills}</label>
+<input id="skills" type="text" required placeholder="${L.skills}" /></div>
+<div class="form-section"><label for="education">${L.education}</label>
+<input id="education" type="text" required placeholder="${L.education}" /></div>
+<div class="form-section"><label for="cert">${L.cert}</label>
+<input id="cert" type="text" placeholder="${L.cert}" /></div>
+<div class="form-section"><label for="hobbies">${L.hobbies}</label>
+<input id="hobbies" type="text" placeholder="${L.hobbies}" /></div>
+<div class="form-section"><label for="interest">${L.interest}</label>
+<select id="jn-interest" required>
+<option value="" disabled selected>Select</option>
+<option>${LANGS[lang].ops.title}</option>
+<option>${LANGS[lang].cc.title}</option>
+<option>${LANGS[lang].it.title}</option>
+<option>${LANGS[lang].pro.title}</option>
+</select></div>
+<div class="form-section"><label for="conted">${L.contEd}</label>
+<input id="conted" type="text" placeholder="${L.contEd}" /></div>
+<div class="form-section"><label for="exp">${L.exp}</label>
+<input id="exp" type="text" placeholder="${L.exp}" /></div>
+<div class="form-section"><label for="about">${L.about}</label>
+<textarea id="about" rows="3" placeholder="${L.about}"></textarea></div>
+<div class="modal-footer">
+<button type="submit" class="submit-btn">${L.submit}</button>
+</div></form></div></div>`;
+setTimeout(()=>{document.getElementById('joinForm').onsubmit=e=>{e.preventDefault();alert((lang=="en"?"Join form submitted!":"¡Formulario enviado!"));closeModal();};},10);
+}
+/* --- CHATTIA AI CHATBOT --- */
+function showChattia(){
+let L=LANGS[lang].chattia;
+document.getElementById('modal-root').innerHTML=`<div id="chatbot-modal-backdrop"><div id="chatbot-container" role="dialog" aria-modal="true">
+<div id="chatbot-header"><span>${L.title}</span>
+<button class="ctrl" onclick="closeModal()" id="chatbot-x">&times;</button></div>
+<div id="chat-log" aria-live="polite"></div>
+<div id="chatbot-form-container">
+<form id="chatbot-input-row" autocomplete="off">
+<input id="chatbot-input" type="text" placeholder="${L.ph}" required maxlength="256">
+<button id="chatbot-send" type="submit" disabled aria-label="Send"><span class="material-icons" style="font-size:1.2em;vertical-align:-3px;">send</span></button>
+</form>
+<label class="human-check"><input type="checkbox" id="human-check"><span>${L.iam}</span></label>
+</div></div></div>`;
+setTimeout(()=>{
+  let input=document.getElementById('chatbot-input'),send=document.getElementById('chatbot-send'),guard=document.getElementById('human-check'),log=document.getElementById('chat-log');
+  guard.onchange=()=>send.disabled=!guard.checked;
+  function addMsg(txt,cls){let div=document.createElement('div');div.className='chat-msg '+cls;div.textContent=txt;log.appendChild(div);log.scrollTop=log.scrollHeight;}
+  document.getElementById('chatbot-input-row').onsubmit=async e=>{
+    e.preventDefault();if(!guard.checked)return;
+    let msg=input.value.trim();if(!msg)return;
+    addMsg(msg,'user');input.value='';send.disabled=true;addMsg('…','bot');
+    setTimeout(()=>{log.lastChild.textContent=(lang=="en"?"This is a demo. Chattia will reply soon.":"Esto es un demo. Chattia responderá pronto.");send.disabled=false;},1000);
+  };
+},10);
+}
+/* === MAIN NAV & CARD CLICK === */
+document.querySelectorAll('.main-link').forEach((el,i)=>{el.onclick=e=>{e.preventDefault();let key=['ops','cc','it','pro'][i];showModal(key);};});
+['card-ops','card-cc','card-it','card-pro'].forEach((id,i)=>{document.getElementById(id).onclick=()=>showModal(['ops','cc','it','pro'][i]);});
+/* === FABs === */
+document.getElementById('fab-contact').onclick=showContactForm;
+document.getElementById('fab-join').onclick=showJoinForm;
+document.getElementById('fab-chat').onclick=showChattia;
+/* === TOGGLES === */
+document.getElementById('lang-toggle').onclick=()=>{setLang(lang=='en'?'es':'en');};
+document.getElementById('theme-toggle').onclick=()=>{setTheme(theme=='dark'?'light':'dark');};
+/* === MOBILE NAV === */
+let mp=document.getElementById('mobile-panel'),btnM=document.getElementById('mobile-menu-btn');
+btnM.onclick=()=>{mp.classList.toggle('active');};
+document.getElementById('mobile-home').onclick=()=>{window.scrollTo({top:0,left:0,behavior:'smooth'});};
+mp.querySelectorAll('.mobile-nav-btn').forEach((btn,i)=>{
+  if(i===0)btn.onclick=()=>{setLang(lang=='en'?'es':'en');mp.classList.remove('active');};
+  else if(i===1)btn.onclick=()=>{setTheme(theme=='dark'?'light':'dark');mp.classList.remove('active');};
+  else btn.onclick=()=>{let k=['ops','cc','it','pro'][i-2];showModal(k);mp.classList.remove('active');};
+});
+/* === INIT === */
+setTheme(theme);setLang(lang);
+</script>
+</body>
+</html>
