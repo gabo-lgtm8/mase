@@ -228,7 +228,7 @@
     /* --- FABs & Mobile --- */
     .fab-stack, .mobile-accordion-nav {
       position: fixed;
-      bottom: 25px;
+      bottom: 60px;
       right: 10px;
       z-index: 999;
       display: flex;
