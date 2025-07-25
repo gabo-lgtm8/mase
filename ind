@@ -186,7 +186,7 @@
     .modal-header img.modal-img { width: 72px; height: 72px; object-fit: cover; border-radius: 1.2em; border: 2px solid #f5e0ff; }
     .modal-title { font-size: 1.16em; font-weight: 700; text-transform: uppercase; }
     .modal-content-body { margin-bottom: 1.1em; font-size: 1.05em; }
-    .modal-video { background: #f7f4fb; color: #ab8adc; border-radius: 1em; margin-bottom: 1em; padding: 1em; text-align: center; }
+    .modal-video { background: #f7f4fb; color: #ab8adc; border-radius: 1em; margin-bottom: 1em; padding: 1em; text-align: left; }
     body.dark .modal-video { background: #18162a; color: #ffe7fe; }
     .modal-actions {
       display: flex;
@@ -362,8 +362,11 @@
       background: var(--clr-footer);
       color: #fff;
       font-size: 1rem;
-      text-align: center;
+      text-align: left;
       padding: 1.15rem 0;
+      padding-left: 10px;
+      justify-content: flex-start;
+      margin-bottom: 0;
       position: fixed;
       left: 0;
       bottom: 0;
@@ -373,6 +376,7 @@
       border-radius: 14px 14px 0 0;
       letter-spacing: 0.01em;
     }
+    footer .terms{font-size:.85em;margin-left:.8em;color:#8c72b9;text-decoration:underline;cursor:pointer;}
   </style>
 </head>
 <body>
@@ -421,7 +425,8 @@
   </div>
   <div id="modal-root"></div>
   <footer>
-    © 2025 OPS Online Support
+    © 2025 OPS Online Support™
+    <a class="terms" href="#" onclick="alert('Terms & Conditions coming soon!');return false;">Terms &amp; Conditions</a>
   </footer>
   <script>
     // SERVICES DATA (EN/ES)
